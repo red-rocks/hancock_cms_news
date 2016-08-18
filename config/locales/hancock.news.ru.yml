@@ -1,0 +1,12 @@
+ru:
+  hancock:
+    news: 'Новости'
+
+  mongoid: &mongoid
+    models:
+      hancock/news/news: Новости
+      hancock/news/image: Фотогалерея новости
+      hancock/news/category: Разделы
+
+  activerecord:
+    <<: *mongoid
