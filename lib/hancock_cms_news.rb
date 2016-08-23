@@ -13,30 +13,8 @@ require 'hancock/news/admin'
 
 require 'smart_excerpt'
 
-# require 'hancock_cms_pages'   if Hancock::News.config.pages_support
-# require 'hancock_cms_seo'     if Hancock::News.config.seo_support
-# require 'hancock_cms_gallery' if Hancock::News.config.gallery_support
-
 module Hancock::News
-  # Hancock::register_plugin(self)
-
-  class << self
-    def orm
-      Hancock.orm
-    end
-    def mongoid?
-      Hancock::News.orm == :mongoid
-    end
-    def active_record?
-      Hancock::News.orm == :active_record
-    end
-    def model_namespace
-      "Hancock::News::Models::#{Hancock::News.orm.to_s.camelize}"
-    end
-    def orm_specific(name)
-      "#{model_namespace}::#{name}".constantize
-    end
-  end
+  include Hancock::Plugin
 
   autoload :Admin,  'hancock/news/admin'
   module Admin
