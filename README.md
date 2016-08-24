@@ -1,8 +1,8 @@
 # HancockCmsNews
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hancock_cms_news`. To experiment with that code, run `bin/console` for an interactive prompt.
+### Remaded from [EnjoyCMSNews](https://github.com/enjoycreative/enjoy_cms_news)
 
-TODO: Delete this and the text above, and describe your gem
+News with categories and image galleries for [HancockCMS](https://github.com/red-rocks/hancock_cms).
 
 ## Installation
 
@@ -22,7 +22,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add in config/routes.rb
+
+```ruby
+  hancock_cms_news_routes
+```
+
+Then execute
+
+    $ rails g hancock:news:config
 
 ## Development
 
