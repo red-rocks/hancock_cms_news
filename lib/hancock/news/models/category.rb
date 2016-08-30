@@ -35,6 +35,14 @@ module Hancock::News
         if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_category_with_pages
           hancock_connectable_field :connected_pages
         end
+
+
+        def self.manager_can_add_actions
+          return [:nested_set]
+        end
+        def self.rails_admin_add_visible_actions
+          return [:nested_set]
+        end
       end
 
       def news_class
@@ -46,11 +54,6 @@ module Hancock::News
       end
 
       def page_title
-      end
-
-
-      def self.manager_default_actions
-        super + [:nested_set]
       end
 
     end

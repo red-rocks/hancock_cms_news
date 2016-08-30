@@ -41,21 +41,26 @@ module Hancock::News
           alias :news_images :images
           accepts_nested_attributes_for :images, allow_destroy: true
         end
+
+
+        def self.manager_can_add_actions
+          if Hancock::Catalog.mongoid?
+            return [:multiple_file_upload, :sort_embedded]
+          end
+          return []
+        end
+        def self.rails_admin_add_visible_actions
+          if Hancock::Catalog.mongoid?
+            return [:multiple_file_upload, :sort_embedded]
+          end
+          return []
+        end
       end
 
       def image_styles
         Hancock::News.config.news_image_styles
       end
 
-
-      def self.manager_default_actions
-        if Hancock::News.config.mongoid?
-          _add = [:multiple_file_upload, :sort_embedded]
-        else
-          _add = []
-        end
-        super + _add
-      end
     end
   end
 end
