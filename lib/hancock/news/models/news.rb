@@ -44,13 +44,13 @@ module Hancock::News
 
 
         def self.manager_can_add_actions
-          if Hancock::Catalog.mongoid?
+          if Hancock::News.mongoid?
             return [:multiple_file_upload, :sort_embedded]
           end
           return []
         end
         def self.rails_admin_add_visible_actions
-          if Hancock::Catalog.mongoid?
+          if Hancock::News.mongoid?
             return [:multiple_file_upload, :sort_embedded]
           end
           return []

@@ -5,7 +5,7 @@ module Hancock::News
 
       def index
         @categories = category_class.enabled.sorted.to_a
-        @root_catalog = category_class.enabled.roots.sorted.all.to_a
+        @root_news_catalog = category_class.enabled.roots.sorted.all.to_a
 
         after_initialize
       end
