@@ -4,7 +4,7 @@ module Hancock::News
       extend ActiveSupport::Concern
 
       def index
-        @news = news_class.enabled.after_now.by_date
+        @news = news_class.enabled.publicated_or_pinned.pinned_first.by_publicate_date
 
         unless Hancock::News.config.news_per_page.nil?
           @news = @news.page(params[:page]).per(Hancock::News.config.news_per_page)

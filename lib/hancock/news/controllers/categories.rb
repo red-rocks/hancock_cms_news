@@ -19,7 +19,7 @@ module Hancock::News
         @seo_parent_page = find_seo_page(url_for(action: :index))
 
         @children = @category.children.enabled.sorted.all.to_a
-        @news = @category.news.enabled.sorted.all.to_a
+        @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
 
         after_initialize
       end

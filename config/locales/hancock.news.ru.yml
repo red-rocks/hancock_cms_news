@@ -8,5 +8,12 @@ ru:
       hancock/news/image: Фотогалерея новости
       hancock/news/category: Разделы
 
+    attributes:
+      hancock/news/news:
+        publicate_time: Дата публикации
+        pinned: Закрепить
+        categories: Разделы
+
+
   activerecord:
     <<: *mongoid

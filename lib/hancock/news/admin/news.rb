@@ -11,7 +11,14 @@ module Hancock::News
           field :enabled, :toggle do
             searchable false
           end
+          field :pinned, :toggle do
+            searchable false
+          end
           field :time do
+            searchable false
+            sort_reverse true
+          end
+          field :publicate_time do
             searchable false
             sort_reverse true
           end
@@ -25,14 +32,6 @@ module Hancock::News
             group :connected_pages do
               active false
               field :connected_pages, :hancock_connectable
-            end
-          end
-
-          if Hancock::News.config.gallery_support
-            group :image do
-              active false
-              field :image, :hancock_image
-              field :images
             end
           end
           group :content do
@@ -52,10 +51,19 @@ module Hancock::News
           end
 
           list do
-            sort_by :time
+            sort_by :publicate_time
           end
 
           edit do
+
+            if Hancock::News.config.gallery_support
+              group :image do
+                active false
+                field :image, :hancock_image
+                field :images
+              end
+            end
+
             group :content do
               active false
               field :content, :hancock_html
