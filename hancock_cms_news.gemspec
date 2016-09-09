@@ -30,9 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
 
-  spec.add_dependency 'hancock_cms', "~> 0.1.0"
+  spec.add_dependency 'hancock_cms', [">=0.1.0", "<=1.0.0"]
+  # spec.add_dependency 'hancock_cms', ["~> 0.1.0", "~> 1.0.0"]
   spec.add_dependency 'stringex'
   spec.add_dependency 'smart_excerpt'
-
-  spec.add_dependency 'kaminari'
 end

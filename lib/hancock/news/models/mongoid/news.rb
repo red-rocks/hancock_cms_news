@@ -12,7 +12,7 @@ module Hancock::News
           field :time, type: Time
           field :publicate_time, type: Time
           before_save do
-            publicate_time ||= time
+            self.publicate_time ||= self.time
           end
           field :pinned, type: Boolean, default: false
           index({enabled: 1, publicate_time: 1, time: 1, pinned: 1})
