@@ -42,18 +42,21 @@ module Hancock::News
           accepts_nested_attributes_for :images, allow_destroy: true
         end
 
-
         def self.manager_can_add_actions
-          if Hancock::News.mongoid?
-            return [:multiple_file_upload, :sort_embedded]
-          end
-          return []
+          ret = []
+          ret += [:multiple_file_upload, :sort_embedded] if Hancock::News.mongoid?
+          ret << :model_settings if Hancock::News.config.model_settings_support
+          ret << :model_accesses if Hancock::News.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::News.config.ra_comments_support
+          ret.freeze
         end
         def self.rails_admin_add_visible_actions
-          if Hancock::News.mongoid?
-            return [:multiple_file_upload, :sort_embedded]
-          end
-          return []
+          ret = []
+          ret += [:multiple_file_upload, :sort_embedded] if Hancock::News.mongoid?
+          ret << :model_settings if Hancock::News.config.model_settings_support
+          ret << :model_accesses if Hancock::News.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::News.config.ra_comments_support
+          ret.freeze
         end
       end
 

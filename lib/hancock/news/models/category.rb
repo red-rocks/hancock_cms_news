@@ -36,13 +36,23 @@ module Hancock::News
           hancock_connectable_field :connected_pages
         end
 
-
         def self.manager_can_add_actions
-          return [:nested_set]
+          ret = [:nested_set]
+          # ret += [:multiple_file_upload, :sort_embedded] if Hancock::News.mongoid?
+          ret << :model_settings if Hancock::News.config.model_settings_support
+          ret << :model_accesses if Hancock::News.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::News.config.ra_comments_support
+          ret.freeze
         end
         def self.rails_admin_add_visible_actions
-          return [:nested_set]
+          ret = [:nested_set]
+          # ret += [:multiple_file_upload, :sort_embedded] if Hancock::News.mongoid?
+          ret << :model_settings if Hancock::News.config.model_settings_support
+          ret << :model_accesses if Hancock::News.config.user_abilities_support
+          ret += [:comments, :model_comments] if Hancock::News.config.ra_comments_support
+          ret.freeze
         end
+
       end
 
       def news_class

@@ -23,6 +23,10 @@ module Hancock::News
 
     attr_accessor :localize
 
+    attr_accessor :model_settings_support
+    attr_accessor :user_abilities_support
+    attr_accessor :ra_comments_support
+
     def initialize
       @news_image_styles = {
           main:  '400x200>',
@@ -49,6 +53,10 @@ module Hancock::News
       @can_connect_category_with_pages = true
 
       @localize = Hancock.config.localize
+
+      @model_settings_support = defined?(RailsAdminModelSettings)
+      @user_abilities_support = defined?(RailsAdminUserAbilities)
+      @ra_comments_support = defined?(RailsAdminComments)
     end
   end
 end

@@ -45,6 +45,7 @@ module Hancock::News
           end
 
         end
+
       end
     end
   end
