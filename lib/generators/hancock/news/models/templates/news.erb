@@ -7,18 +7,39 @@ class <%= camelcased_class_name %> < Hancock::News::News
   alias :<%= underscored_class_name %>_images :news_images
   accepts_nested_attributes_for :news_images, allow_destroy: true
 
-  def image_styles
-    {}
-  end
+  # # after_save :image_auto_rails_admin_jcrop
+  # def image_auto_rails_admin_jcrop
+  #   auto_rails_admin_jcrop(:image) # or nil for cancel autocrop
+  # end
 
-  def image_jcrop_options
-    {}
-  end
+  # # hancock_cms_attached_file(:image)
+  # def image_styles
+  #   super
+  # end
 
+  # def image_jcrop_options
+  #   super
+  # end
 
-  def routes_namespace
-    :main_app # or nil
-  end
+  ########################################
+
+  # scope :after_now, -> { where(:time.lt => Time.now) }
+  # scope :by_date, -> { desc(:time) }
+  #
+  # scope :published, -> { where(published: true) }
+  # scope :publicated, -> { all_of({:publicate_time.lt => Time.now}, {published: true}) }
+  # scope :by_publicate_date, -> { desc(:publicate_time) }
+  #
+  # scope :pinned, -> { where(pinned: true) }
+  # scope :pinned_first, -> { desc(:pinned) }
+  #
+  # scope :publicated_or_pinned, -> {
+  #   any_of({"$and" => [{:publicate_time.lt => Time.now}, {published: true}]}, {pinned: true})
+  # }
+  #
+  # scope :after_now_or_pinned, -> {
+  #   any_of({:time.lt => Time.now}, {pinned: true})
+  # }
 
 
   ############# rails_admin ##############
@@ -27,6 +48,22 @@ class <%= camelcased_class_name %> < Hancock::News::News
   end
 
   def self.rails_admin_add_config(config)
+  end
+
+  def admin_can_user_defined_actions
+    [].freeze
+  end
+  def admin_cannot_user_defined_actions
+    [].freeze
+  end
+  def manager_can_user_defined_actions
+    [].freeze
+  end
+  def manager_cannot_user_defined_actions
+    [].freeze
+  end
+  def rails_admin_user_defined_visible_actions
+    [].freeze
   end
 
   rails_admin(&Hancock::News::Admin::News.config(rails_admin_add_fields) { |config|

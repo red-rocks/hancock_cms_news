@@ -11,6 +11,7 @@ ru:
     attributes:
       hancock/news/news:
         publicate_time: Дата публикации
+        published: Опубликовано
         pinned: Закрепить
         categories: Разделы
 

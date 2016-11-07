@@ -25,7 +25,7 @@ module Hancock::News
       end
 
       def page_title
-        if @category
+        if @category and @category.class == category_class
           @category.page_title
         else
           super

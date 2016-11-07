@@ -7,7 +7,7 @@ module Hancock::News
         @news = news_class.enabled.publicated_or_pinned.pinned_first.by_publicate_date
 
         unless Hancock::News.config.news_per_page.nil?
-          @news = @news.page(params[:page]).per(Hancock::News.config.news_per_page)
+          @news = @news.page(params[:page]).per(per_page)
         end
 
         after_initialize
@@ -39,6 +39,9 @@ module Hancock::News
         end
       end
 
+      def per_page
+        Hancock::News.config.news_per_page
+      end
       def after_initialize
       end
     end

@@ -7,4 +7,7 @@ class <%= camelcased_pluralized_class_name %>Controller < Hancock::News::Categor
   def news_class
     <%= item_class_name %>
   end
+
+  def after_initialize
+  end
 end

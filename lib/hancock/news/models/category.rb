@@ -53,17 +53,18 @@ module Hancock::News
           ret.freeze
         end
 
-      end
+        def self.news_class
+          Hancock::News::News
+        end
 
-      def news_class
-        Hancock::News::News
-      end
+        def news_class
+          self.class.news_class
+        end
 
-      def image_styles
-        Hancock::News.configuration.category_image_styles
-      end
+        def image_styles
+          Hancock::News.configuration.category_image_styles
+        end
 
-      def page_title
       end
 
     end

@@ -17,6 +17,20 @@ module Hancock::News
             if Hancock::News.config.pages_support
               field :connected_pages, :hancock_connectable
             end
+            field :add_news do
+              pretty_value do
+                _model = bindings[:object].news_class.rails_admin_model
+                bindings[:view].link_to(
+                  'Добавить Новость',
+                  bindings[:view].new_path(model_name: _model, "#{_model}[category_ids][]": bindings[:object]._id.to_s),
+                  class: 'label label-info'
+                )
+              end
+              visible do
+                bindings[:controller].action_name == 'index'
+              end
+              formatted_value {}
+            end
           end
 
           edit do
@@ -85,17 +99,7 @@ module Hancock::News
 
           show do
             field :name
-            field :slugs, :enum do
-              enum_method do
-                :slugs
-              end
-              visible do
-                bindings[:view].current_user.admin?
-              end
-              multiple do
-                true
-              end
-            end
+            field :slugs, :hancock_slugs
             field :text_slug
             field :enabled
             field :image

@@ -10,12 +10,13 @@ module Hancock::News
           field :name, type: String, localize: Hancock::News.config.localize, default: ""
 
           field :time, type: Time
+          field :published, type: Boolean, default: false
           field :publicate_time, type: Time
           before_save do
             self.publicate_time ||= self.time
           end
           field :pinned, type: Boolean, default: false
-          index({enabled: 1, publicate_time: 1, time: 1, pinned: 1})
+          index({enabled: 1, publicate_time: 1, time: 1, pinned: 1, published: 1})
 
           hancock_cms_html_field :excerpt, type: String, localize: Hancock::News.configuration.localize, default: ""
           hancock_cms_html_field :content, type: String, localize: Hancock::News.configuration.localize, default: ""
@@ -25,14 +26,15 @@ module Hancock::News
           scope :after_now, -> { where(:time.lt => Time.now) }
           scope :by_date, -> { desc(:time) }
 
-          scope :publicated, -> { where(:publicate_time.lt => Time.now) }
+          scope :published, -> { where(published: true) }
+          scope :publicated, -> { all_of({:publicate_time.lt => Time.now}, {published: true}) }
           scope :by_publicate_date, -> { desc(:publicate_time) }
 
           scope :pinned, -> { where(pinned: true) }
           scope :pinned_first, -> { desc(:pinned) }
 
           scope :publicated_or_pinned, -> {
-            any_of({:publicate_time.lt => Time.now}, {pinned: true})
+            any_of({"$and" => [{:publicate_time.lt => Time.now}, {published: true}]}, {pinned: true})
           }
 
           scope :after_now_or_pinned, -> {

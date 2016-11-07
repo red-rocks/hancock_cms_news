@@ -5,6 +5,10 @@ class HancockNewsCreateNews < ActiveRecord::Migration
       t.boolean :enabled, default: true, null: false
       t.timestamp :time, null: false
 
+      t.boolean :published, default: true, null: false
+      t.timestamp :publicate_time, null: false
+      t.boolean :pinned, default: true, null: false
+
       if Hancock::News.config.localize
         t.column :name_translations, 'hstore', default: {}
         t.column :excerpt_html_translations, 'hstore', default: {}
