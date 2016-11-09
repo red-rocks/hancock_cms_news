@@ -4,8 +4,10 @@ module Hancock::News
       def self.config(nav_label = nil, fields = {})
         if nav_label.is_a?(Hash)
           fields, nav_label = nav_label, nil
+        elsif nav_label.is_a?(Array)
+          nav_label, fields = nil, nav_label
         end
-        
+
         if Hancock::News.config.gallery_support
           if Hancock::News.mongoid?
             if block_given?
