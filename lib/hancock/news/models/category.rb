@@ -27,7 +27,13 @@ module Hancock::News
         manual_slug :name
 
         if Hancock::News.config.gallery_support and Hancock::News.configuration.category_image_styles
+          set_default_auto_crop_params_for(:image)
           hancock_cms_attached_file(:image)
+          # if Hancock::News.config.watermark_support
+          #   paperclip_with_watermark(:image)
+          # else
+          #   hancock_cms_attached_file(:image)
+          # end
         end
 
         acts_as_nested_set

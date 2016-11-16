@@ -16,6 +16,9 @@ module Hancock::News
       end
       if Hancock::News.config.gallery_support
         include Hancock::Gallery::Paperclipable
+        # if Hancock::News.config.watermark_support
+        #   include Hancock::Gallery::Watermarkable
+        # end
       end
 
       include SmartExcerpt
@@ -32,14 +35,18 @@ module Hancock::News
         end
 
         if Hancock::News.config.gallery_support and Hancock::News.configuration.news_image_styles
+          set_default_auto_crop_params_for(:image)
           hancock_cms_attached_file(:image)
+          # if Hancock::News.config.watermark_support
+          #   paperclip_with_watermark(:image)
+          # else
+          #   hancock_cms_attached_file(:image)
+          # end
         end
 
         alias :news_categories :categories
 
         if Hancock::News.config.gallery_support
-          alias :news_images :images
-          accepts_nested_attributes_for :images, allow_destroy: true
         end
 
         def self.manager_can_add_actions
