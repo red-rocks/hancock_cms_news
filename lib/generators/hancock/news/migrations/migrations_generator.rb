@@ -6,7 +6,7 @@ module Hancock::News
     include ActiveRecord::Generators::Migration
     source_root File.expand_path('../templates', __FILE__)
 
-    desc 'Hancock::News migration generator'
+    desc 'Hancock::News migrations generator'
     def migrations
       if Hancock::News.active_record?
         %w(news).each do |table_name|

@@ -7,14 +7,12 @@ module Hancock::News
 
           included do
             embedded_in :news, class_name: "Hancock::News::News"
-          end
 
-          include ::Mongoid::EmbeddedFindable
-          module ClassMethods
-            def find(id)
+            def self.find(id)
               find_through(Hancock::News::News, 'images', id)
             end
           end
+          
         end
       end
     end
