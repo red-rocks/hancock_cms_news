@@ -18,6 +18,8 @@ module Hancock::News
     attr_accessor :seo_support
     attr_accessor :pages_support
 
+    attr_accessor :breadcrumbs_on_rails_support
+
     attr_accessor :can_connect_news_with_pages
     attr_accessor :can_connect_category_with_pages
 
@@ -49,6 +51,8 @@ module Hancock::News
       @gallery_support = defined? Hancock::Gallery
       @seo_support = defined? Hancock::Seo
       @pages_support = defined? Hancock::Pages
+
+      @breadcrumbs_on_rails_support = defined?(BreadcrumbsOnRails)
 
       @can_connect_news_with_pages = true
       @can_connect_category_with_pages = true

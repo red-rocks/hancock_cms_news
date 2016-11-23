@@ -1,3 +1,10 @@
+/ - if Hancock::News.config.breadcrumbs_on_rails_support
+/   = render_breadcrumbs :separator => ' / '
+  / = render partial: "blocks/breadcrumbs"
+  
+= render partial: "blocks/seo_block_with_obj", locals: {obj: @news}
+
+
 .hancock-news-show
   h1.hancock-news-title= @news.name
   .hancock-news-date= l(@news.time.to_date)

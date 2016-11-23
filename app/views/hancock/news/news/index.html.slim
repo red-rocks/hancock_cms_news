@@ -1,3 +1,9 @@
+/ - if Hancock::News.config.breadcrumbs_on_rails_support
+/   = render_breadcrumbs :separator => ' / '
+  / = render partial: "blocks/breadcrumbs"
+  
+= render partial: "blocks/seo_block"
+
 .hancock-news-index
   h1= t('hancock.news')
   = render partial: "hancock/news/news/list"

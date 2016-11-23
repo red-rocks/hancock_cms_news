@@ -3,6 +3,12 @@ module Hancock::News
     module Categories
       extend ActiveSupport::Concern
 
+      included do
+        if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          add_breadcrumb I18n.t('hancock.breadcrumbs.categories'), :hancock_news_categories_path, if: :insert_breadcrumbs
+        end
+      end
+
       def index
         @categories = category_class.enabled.sorted.to_a
         @root_news_catalog = category_class.enabled.roots.sorted.all.to_a
@@ -21,6 +27,10 @@ module Hancock::News
         @children = @category.children.enabled.sorted.all.to_a
         @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
 
+        if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          add_breadcrumb @category.name, hancock_news_category_path(@category), if: :insert_breadcrumbs
+        end
+
         after_initialize
       end
 
@@ -38,6 +48,10 @@ module Hancock::News
       end
       def news_class
         Hancock::News::News
+      end
+
+      def insert_breadcrumbs
+        true
       end
 
       def after_initialize

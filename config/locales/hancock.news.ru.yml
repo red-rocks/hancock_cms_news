@@ -1,6 +1,10 @@
 ru:
   hancock:
     news: 'Новости'
+    breadcrumbs:
+      news: Новости
+      categories: Разделы
+
 
   mongoid: &mongoid
     models:
