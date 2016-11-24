@@ -4,66 +4,57 @@ module Hancock::News
       extend ActiveSupport::Concern
 
       included do
-        if Hancock::News.config.breadcrumbs_on_rails_support
-          add_breadcrumb I18n.t('hancock.breadcrumbs.news'), :hancock_news_news_index_path, if: :insert_news_breadcrumbs
-        end
-      end
+        include Hancock::News::Controllers::Base
 
-      def index
-        @news = news_class.enabled.publicated_or_pinned.pinned_first.by_publicate_date
-        insert_category_breadcrumbs if insert_breadcrumbs
+        def index
+          if Hancock::News.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
+          end
 
-        unless Hancock::News.config.news_per_page.nil?
-          @news = @news.page(params[:page]).per(per_page)
-        end
+          @news = news_index_scope
 
-        after_initialize
-      end
+          unless per_page.nil?
+            @news = @news.page(params[:page]).per(per_page)
+          end
 
-      def show
-        @news = news_class.after_now.find(params[:id])
-
-        if @news and @news.text_slug != params[:id]
-          redirect_to hancock_news_news_path(@news), status_code: 301
-          return true
+          after_initialize
         end
 
-        if Hancock::Catalog.config.breadcrumbs_on_rails_support
-          insert_category_breadcrumbs if insert_breadcrumbs
-          add_breadcrumb @item.name, hancock_catalog_item_path(@item), if: :insert_breadcrumbs
+
+        def show
+          if Hancock::News.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
+          end
+
+          @news = news_show_scope.find(params[:id])
+
+          if @news and @news.text_slug != params[:id]
+            redirect_to hancock_news_news_path(@news), status_code: 301
+            return true
+          end
+          @seo_parent_page = find_seo_page(url_for(action: :index))
+
+          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+            add_breadcrumb(@news.name, insert_news_show_breadcrumbs) if insert_news_show_breadcrumbs
+          end
+
+          after_initialize
         end
 
-        after_initialize
-      end
 
-      private
-      def category_class
-        Hancock::News::Category
-      end
-      def news_class
-        Hancock::News::News
-      end
-      def page_title
-        if @news.class == news_class
-          @news.page_title
-        else
-          super
+
+        def page_title
+          if @news and @news.class == news_class
+            @news.page_title
+          else
+            super
+          end
         end
-      end
 
-      def per_page
-        Hancock::News.config.news_per_page
-      end
-      def after_initialize
-      end
+        def per_page
+          Hancock::News.config.news_per_page
+        end
 
-      def insert_breadcrumbs
-        true
-      end
-      def insert_news_breadcrumbs
-        true
-      end
-      def insert_category_breadcrumbs
       end
 
     end

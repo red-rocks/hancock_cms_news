@@ -42,6 +42,8 @@ module Hancock::News
   end
 
   module Controllers
+    autoload :Base,             'hancock/news/controllers/base'
+
     autoload :News,             'hancock/news/controllers/news'
     autoload :Categories,       'hancock/news/controllers/categories'
   end

@@ -1,6 +1,6 @@
 class <%= camelcased_class_name %> < Hancock::News::Image
   embedded_in :news, class_name: "<%= camelcased_news_class_name %>"
-  alias :<%= underscored_class_name %> :news
+  alias :<%= underscored_news_class_name %> :news
 
   def self.find(id)
     find_through(<%= camelcased_news_class_name %>, 'images', id)

@@ -37,6 +37,10 @@ module Hancock::News
             any_of({"$and" => [{:publicate_time.lt => Time.now}, {published: true}]}, {pinned: true})
           }
 
+          scope :published_or_pinned, -> {
+            any_of({published: true}, {pinned: true})
+          }
+
           scope :after_now_or_pinned, -> {
             any_of({:time.lt => Time.now}, {pinned: true})
           }

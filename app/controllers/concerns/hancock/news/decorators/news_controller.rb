@@ -11,7 +11,7 @@ module Hancock::News::Decorators
     #     Hancock::News::News
     #   end
     #   def page_title
-    #     if @news.class == news_class
+    #     if @news and @news.class == news_class
     #       @news.page_title
     #     else
     #       super

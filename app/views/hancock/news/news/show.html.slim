@@ -2,13 +2,12 @@
 /   = render_breadcrumbs :separator => ' / '
   / = render partial: "blocks/breadcrumbs"
   
-= render partial: "blocks/seo_block_with_obj", locals: {obj: @news}
+/ = render partial: "blocks/seo_block_with_obj", locals: {obj: @news}
 
 
 .hancock-news-show
   h1.hancock-news-title= @news.name
   .hancock-news-date= l(@news.time.to_date)
-  .hancock-news-text== @news.content
   - if !Hancock::News.config.news_image_styles.nil? && @news.image?
     .hancock-news-image= image_tag @news.image.url(:main)
   .hancock-news-content

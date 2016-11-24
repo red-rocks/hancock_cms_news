@@ -21,6 +21,10 @@ module Hancock::News::Decorators
     #     end
     #   end
     #
+    #   def per_page
+    #     Hancock::News.config.categories_per_page
+    #   end
+    #
     #   def insert_breadcrumbs
     #     true
     #   end

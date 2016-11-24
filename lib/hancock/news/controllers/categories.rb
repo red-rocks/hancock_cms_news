@@ -4,90 +4,59 @@ module Hancock::News
       extend ActiveSupport::Concern
 
       included do
-        if Hancock::Catalog.config.breadcrumbs_on_rails_support
-          add_breadcrumb I18n.t('hancock.breadcrumbs.categories'), :hancock_news_categories_path, if: :insert_breadcrumbs
-        end
-      end
+        include Hancock::News::Controllers::Base
 
-      def index
-        @categories = category_class.enabled.sorted.to_a
-        @root_news_catalog = category_class.enabled.roots.sorted.all.to_a
+        def index
+          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_categories_title, insert_categories_index_breadcrumbs) if insert_categories_index_breadcrumbs
+          end
 
-        after_initialize
-      end
+          @categories = category_index_scope.to_a
+          @root_news_catalog = category_index_scope.roots.all.to_a
 
-      def show
-        @category = category_class.enabled.find(params[:id])
-        if !@category.text_slug.blank? and @category.text_slug != params[:id]
-          redirect_to hancock_news_category_path(@category), status_code: 301
-          return
-        end
-        @seo_parent_page = find_seo_page(url_for(action: :index))
-
-        @children = @category.children.enabled.sorted.all.to_a
-        @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
-
-        if Hancock::Catalog.config.breadcrumbs_on_rails_support
-          add_breadcrumb @category.name, hancock_news_category_path(@category), if: :insert_breadcrumbs
+          after_initialize
         end
 
-        after_initialize
-      end
+        def show
+          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_categories_title, insert_categories_index_breadcrumbs) if insert_categories_index_breadcrumbs
+          end
 
-      def page_title
-        if @category and @category.class == category_class
-          @category.page_title
-        else
-          super
+          @category = category_show_scope.find(params[:id])
+          if !@category.text_slug.blank? and @category.text_slug != params[:id]
+            redirect_to hancock_news_category_path(@category), status_code: 301
+            return
+          end
+          @seo_parent_page = find_seo_page(url_for(action: :index))
+
+          @children = @category.children.enabled.sorted.all.to_a
+          # @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
+          @news = news_index_scope(@category)
+
+          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+            # add_breadcrumb @category.name, -> { insert_category_show_breadcrumbs } if insert_category_show_breadcrumbs
+            add_breadcrumb(@category.name, insert_category_show_breadcrumbs)# if insert_category_show_breadcrumbs
+          end
+
+          after_initialize
         end
+
+
+
+        def page_title
+          if @category and @category.class == category_class
+            @category.page_title
+          else
+            super
+          end
+        end
+
+        def per_page
+          Hancock::News.config.categories_per_page
+        end
+
       end
 
-      private
-      def category_class
-        Hancock::News::Category
-      end
-      def news_class
-        Hancock::News::News
-      end
-
-      def insert_breadcrumbs
-        true
-      end
-
-      def after_initialize
-      end
-
-      # def index_crumbs
-      #   if @seo_parent_page
-      #     catalog_title   = Settings.ns('breadcrumbs').catalog_title(default: "Каталог", label: "'Каталог' в breadcrumbs")
-      #     _crumb = catalog_title
-      #     _crumb = @seo_parent_page.name if _crumb.blank?
-      #     _crumb = @seo_parent_page.title if _crumb.blank?
-      #     _crumb = @seo_parent_page.h1 if _crumb.blank?
-      #     add_crumb _crumb, @seo_parent_page.fullpath
-      #   else
-      #     catalog_title   = Settings.ns('breadcrumbs').catalog_title(default: "Каталог", label: "'Каталог' в breadcrumbs")
-      #     _crumb = catalog_title
-      #     add_crumb _crumb, item_categories_path
-      #   end
-      # end
-      #
-      # def category_crumbs
-      #   if @item_category
-      #     _parent = @item_category.parent
-      #     if _parent
-      #       _crumb = _parent.name if _crumb.blank?
-      #       _crumb = _parent.title if _crumb.blank?
-      #       _crumb = _parent.h1 if _crumb.blank?
-      #       add_crumb _crumb, item_category_path(_parent)
-      #       _crumb = nil
-      #     end
-      #     _crumb = @item_category.name if _crumb.blank?
-      #     _crumb = @item_category.title if _crumb.blank?
-      #     _crumb = @item_category.h1 if _crumb.blank?
-      #     add_crumb _crumb, item_category_path(@item_category)
-      #   end
-      # end
     end
   end
 end

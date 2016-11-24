@@ -10,6 +10,8 @@ module Hancock::News
     attr_accessor :category_image_styles
     attr_accessor :images_image_styles
 
+    attr_accessor :categories_per_page
+
     attr_accessor :news_per_page
     attr_accessor :news_excerpt
     attr_accessor :news_content_required
@@ -43,6 +45,8 @@ module Hancock::News
           main:  '400x200>',
           thumb: '200x100>'
       }
+
+      @categories_per_page = 10
 
       @news_per_page = 10
       @news_excerpt = 12

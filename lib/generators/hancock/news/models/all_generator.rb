@@ -11,7 +11,7 @@ module Hancock::News::Models
     def all
       generate "hancock:news:models:news #{camelcased_class_name}"
       generate "hancock:news:models:category #{category_class_name}"
-      generate "hancock:news:models:news_image #{image_class_name}"
+      generate "hancock:news:models:image #{image_class_name}"
     end
 
     private
