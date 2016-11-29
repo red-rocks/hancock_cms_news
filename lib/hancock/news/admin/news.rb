@@ -22,7 +22,7 @@ module Hancock::News
             searchable false
             sort_reverse true
           end
-          field :published do
+          field :published, :toggle do
             searchable false
           end
           field :name do
