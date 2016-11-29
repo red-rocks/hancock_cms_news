@@ -11,8 +11,8 @@ module Hancock::News
             add_breadcrumb(breadcrumbs_categories_title, insert_categories_index_breadcrumbs) if insert_categories_index_breadcrumbs
           end
 
-          @categories = category_index_scope.to_a
-          @root_news_catalog = category_index_scope.roots.all.to_a
+          @categories = category_index_scope.page(params[:page]).per(per_page)
+          @root_news_catalog = category_index_scope.roots
 
           after_initialize
         end
@@ -29,9 +29,9 @@ module Hancock::News
           end
           @seo_parent_page = find_seo_page(url_for(action: :index))
 
-          @children = @category.children.enabled.sorted.all.to_a
+          @children = @category.children.enabled.sorted.all
           # @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
-          @news = news_index_scope(@category)
+          @news = news_index_scope(@category).page(params[:page]).per(news_per_page)
 
           if Hancock::Catalog.config.breadcrumbs_on_rails_support
             # add_breadcrumb @category.name, -> { insert_category_show_breadcrumbs } if insert_category_show_breadcrumbs
@@ -53,6 +53,10 @@ module Hancock::News
 
         def per_page
           Hancock::News.config.categories_per_page
+        end
+
+        def news_per_page
+          Hancock::News.config.news_per_page
         end
 
       end
