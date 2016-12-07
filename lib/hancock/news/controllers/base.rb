@@ -20,7 +20,7 @@ module Hancock::News
         end
 
         def news_class(category = nil)
-          category ? category.category_class : Hancock::News::News
+          category ? category.news_class : Hancock::News::News
         end
         def news_scope(category = nil)
           category ? category.news.enabled : news_class.enabled
@@ -28,8 +28,8 @@ module Hancock::News
         def news_index_scope(category = nil)
           news_scope(category).publicated_or_pinned.pinned_first.by_publicate_date
         end
-        def news_show_scope
-          news_scope.publicated_or_pinned
+        def news_show_scope(category = nil)
+          news_scope(category).publicated_or_pinned
         end
 
         def after_initialize
