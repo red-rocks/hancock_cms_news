@@ -7,6 +7,12 @@ module Hancock::News
         include Hancock::HtmlField
 
         included do
+          index({main_category_id: 1})
+          index({category_ids: 1})
+          index({related_news_ids: 1})
+          index({enabled: 1, time: 1,           pinned: 1, published: 1})
+          index({enabled: 1, publicate_time: 1, pinned: 1, published: 1})
+
           field :name, type: String, localize: Hancock::News.config.localize, default: ""
 
           field :time, type: Time
@@ -16,7 +22,6 @@ module Hancock::News
             self.publicate_time ||= self.time
           end
           field :pinned, type: Boolean, default: false
-          index({enabled: 1, publicate_time: 1, time: 1, pinned: 1, published: 1})
 
           hancock_cms_html_field :excerpt, type: String, localize: Hancock::News.configuration.localize, default: ""
           hancock_cms_html_field :content, type: String, localize: Hancock::News.configuration.localize, default: ""
@@ -50,6 +55,8 @@ module Hancock::News
             alias :news_images :images
             accepts_nested_attributes_for :images, allow_destroy: true
           end
+
+          has_and_belongs_to_many :related_news, :class_name => "Hancock::News::News", :inverse_of => :related_news, foreign_key: :related_news_ids
 
         end
 

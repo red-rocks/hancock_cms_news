@@ -29,7 +29,7 @@ module Hancock::News
             searchable true
           end
           field :categories do
-            searchable :name
+            # searchable :name
           end
           if Hancock::News.config.pages_support
             group :connected_pages do
@@ -58,6 +58,11 @@ module Hancock::News
           end
 
           edit do
+            group :categories do
+              active false
+              field :main_category
+              field :categories
+            end
 
             if Hancock::News.config.gallery_support
               group :image do

@@ -7,6 +7,9 @@ module Hancock::News
         include Hancock::HtmlField
 
         included do
+          index({enabled: 1, lft: 1})
+          index({parent_id: 1})
+          
           field :name, type: String, localize: Hancock::News.configuration.localize, default: ""
 
           scope :sorted, -> { order_by([:lft, :asc]) }
