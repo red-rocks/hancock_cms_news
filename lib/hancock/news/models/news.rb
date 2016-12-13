@@ -27,6 +27,13 @@ module Hancock::News
 
 
       included do
+        belongs_to :main_category, class_name: "Hancock::News::Category", inverse_of: nil
+        before_validation :set_default_main_category
+        def set_default_main_category(force = false)
+          if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
+            self.main_category = self.categories.enabled.sorted.first
+          end
+        end
 
         manual_slug :name
 
