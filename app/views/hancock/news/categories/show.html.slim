@@ -4,8 +4,8 @@
   
 / = render partial: "blocks/seo_block_with_obj", locals: {obj: @news_category}
 
-
-.hancock-news-show
-  h1.hancock-news-title= @news_category.name
-  .hancock-news-category-content
-    = render 'shared/obj', obj: @news_category
+- cache @news_category do
+  .hancock-news-show
+    h1.hancock-news-title= @news_category.name
+    .hancock-news-category-content
+      = render 'shared/obj', obj: @news_category
