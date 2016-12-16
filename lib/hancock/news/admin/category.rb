@@ -42,42 +42,51 @@ module Hancock::News
                 field :connected_pages, :hancock_connectable
               end
             end
-            group :URL do
-              active false
-              field :slugs, :hancock_slugs
-              field :text_slug
-            end
+
+            group :URL, &Hancock::Admin.url_block
+            # group :URL do
+            #   active false
+            #   field :slugs, :hancock_slugs
+            #   field :text_slug
+            # end
 
 
             if Hancock::News.config.gallery_support
-              group :image do
-                active false
-                field :image, :hancock_image
-                # field :item_category_images
-              end
+              group :image, &Hancock::Gallery::Admin.images_block()
+              # group :image do
+              #   active false
+              #   field :image, :hancock_image
+              #   # field :item_category_images
+              # end
             end
 
-            group :content do
-              active false
-              field :excerpt, :hancock_html
-              field :content, :hancock_html
-            end
+            group :content, &Hancock::Admin.content_block
+            # group :content do
+            #   active false
+            #   field :excerpt, :hancock_html
+            #   field :content, :hancock_html
+            # end
 
             Hancock::RailsAdminGroupPatch::hancock_cms_group(self, fields)
 
             if Hancock::News.config.seo_support
-              group :seo do
-                active false
-                field :seo do
-                  active true
-                end
-              end
-              group :sitemap_data do
-                active false
-                field :sitemap_data do
-                  active true
-                end
-              end
+              group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block
+              # group :seo do
+              #   active false
+              #   field :seo do
+              #     active true
+              #   end
+              # end
+              # group :sitemap_data do
+              #   active false
+              #   field :sitemap_data do
+              #     active true
+              #   end
+              # end
+            end
+
+            if Hancock::Pages.config.cache_support
+              group :caching, &Hancock::Cache::Admin.caching_block
             end
 
             group :news do

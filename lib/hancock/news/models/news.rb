@@ -21,10 +21,13 @@ module Hancock::News
         # end
       end
 
+      if Hancock::Gallery.config.cache_support
+        include Hancock::Cache::Cacheable
+      end
+
       include SmartExcerpt
 
       include Hancock::News.orm_specific('News')
-
 
       included do
         if Hancock.rails4?
@@ -56,9 +59,6 @@ module Hancock::News
         end
 
         alias :news_categories :categories
-
-        if Hancock::News.config.gallery_support
-        end
 
         def self.manager_can_add_actions
           ret = []

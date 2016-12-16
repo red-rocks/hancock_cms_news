@@ -7,11 +7,11 @@ module Hancock::News
         include Hancock::HtmlField
 
         included do
-          index({main_category_id: 1})
-          index({category_ids: 1})
-          index({related_news_ids: 1})
-          index({enabled: 1, time: 1,           pinned: 1, published: 1})
-          index({enabled: 1, publicate_time: 1, pinned: 1, published: 1})
+          index({main_category_id: 1}, {background: true})
+          index({category_ids: 1}, {background: true})
+          index({related_news_ids: 1}, {background: true})
+          index({enabled: 1, time: 1,           pinned: 1, published: 1}, {background: true})
+          index({enabled: 1, publicate_time: 1, pinned: 1, published: 1}, {background: true})
 
           field :name, type: String, localize: Hancock::News.config.localize, default: ""
 
