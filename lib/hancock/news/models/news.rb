@@ -40,6 +40,8 @@ module Hancock::News
           if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
             self.main_category = self.categories.enabled.sorted.first
           end
+          self.categories << self.main_category if self.main_category
+          self
         end
 
         manual_slug :name
