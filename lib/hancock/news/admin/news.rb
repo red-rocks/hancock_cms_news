@@ -6,6 +6,11 @@ module Hancock::News
           navigation_label I18n.t('hancock.news')
           list do
             scopes [:by_date, :enabled, nil]
+
+            sort_by :publicate_time
+
+            group :content, &Hancock::Admin.content_block
+            group :caching, &Hancock::Cache::Admin.caching_block
           end
 
           field :enabled, :toggle do
@@ -51,10 +56,6 @@ module Hancock::News
             field :text_slug do
               searchable true
             end
-          end
-
-          list do
-            sort_by :publicate_time
           end
 
           edit do

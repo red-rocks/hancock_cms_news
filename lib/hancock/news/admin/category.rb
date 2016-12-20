@@ -31,6 +31,9 @@ module Hancock::News
               end
               formatted_value {}
             end
+
+            group :content, &Hancock::Admin.content_block
+            group :caching, &Hancock::Cache::Admin.caching_block
           end
 
           edit do
