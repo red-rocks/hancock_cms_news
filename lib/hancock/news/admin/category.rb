@@ -1,9 +1,15 @@
 module Hancock::News
   module Admin
     module Category
-      def self.config(fields = {})
+      def self.config(nav_label = nil, fields = {})
+        if nav_label.is_a?(Hash)
+          nav_label, fields = nav_label[:nav_label], nav_label
+        elsif nav_label.is_a?(Array)
+          nav_label, fields = nil, nav_label
+        end
+
         Proc.new {
-          navigation_label I18n.t('hancock.news')
+          navigation_label(!nav_label.blank? ? nav_label : I18n.t("hancock.news"))
 
           list do
             scopes [:sorted, :enabled, nil]
@@ -14,14 +20,14 @@ module Hancock::News
             field :name do
               searchable true
             end
-            if Hancock::News.config.pages_support
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_category_with_pages
               field :connected_pages, :hancock_connectable
             end
-            field :add_news do
+            field :add_item do
               pretty_value do
-                _model = bindings[:object].news_class.rails_admin_model
+                _model = bindings[:object].item_class.rails_admin_model
                 bindings[:view].link_to(
-                  'Добавить Новость',
+                  'Добавить новость',
                   bindings[:view].new_path(model_name: _model, "#{_model}[category_ids][]": bindings[:object]._id.to_s),
                   class: 'label label-info'
                 )
@@ -39,10 +45,15 @@ module Hancock::News
           edit do
             field :enabled, :toggle
             field :name
-            if Hancock::News.config.pages_support
+
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_category_with_pages
               group :connected_pages do
                 active false
-                field :connected_pages, :hancock_connectable
+                field :connected_pages, :hancock_connectable do
+                  read_only do
+                    !bindings[:view].current_user.admin?
+                  end
+                end
               end
             end
 
@@ -53,15 +64,14 @@ module Hancock::News
             #   field :text_slug
             # end
 
-
             if Hancock::News.config.gallery_support
-              group :image, &Hancock::Gallery::Admin.images_block()
+              group :image, &Hancock::Gallery::Admin.images_block([])
               # group :image do
               #   active false
               #   field :image, :hancock_image
-              #   # field :item_category_images
               # end
             end
+
 
             group :content, &Hancock::Admin.content_block
             # group :content do
@@ -76,15 +86,11 @@ module Hancock::News
               group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block
               # group :seo do
               #   active false
-              #   field :seo do
-              #     active true
-              #   end
+              #   field :seo
               # end
               # group :sitemap_data do
               #   active false
-              #   field :sitemap_data do
-              #     active true
-              #   end
+              #   field :sitemap_data
               # end
             end
 
@@ -96,13 +102,13 @@ module Hancock::News
               active false
               field :news do
                 read_only true
-                help 'Список Новостей'
+                help 'Список новостей'
 
                 pretty_value do
-                  bindings[:object].news.to_a.map { |n|
+                  bindings[:object].news.to_a.map { |i|
                     route = (bindings[:view] || bindings[:controller])
-                    model_name = n.rails_admin_model
-                    route.link_to(n.name, route.rails_admin.show_path(model_name: model_name, id: n.id), title: n.name)
+                    model_name = i.rails_admin_model
+                    route.link_to(i.name, route.rails_admin.show_path(model_name: model_name, id: i.id), title: i.name)
                   }.join("<br>").html_safe
                 end
               end
@@ -124,10 +130,10 @@ module Hancock::News
               read_only true
 
               pretty_value do
-                bindings[:object].news.to_a.map { |n|
+                bindings[:object].news.to_a.map { |i|
                   route = (bindings[:view] || bindings[:controller])
-                  model_name = n.rails_admin_model
-                  route.link_to(n.name, route.rails_admin.show_path(model_name: model_name, id: n.id), title: n.name)
+                  model_name = i.rails_admin_model
+                  route.link_to(i.name, route.rails_admin.show_path(model_name: model_name, id: i.id), title: i.name)
                 }.join("<br>").html_safe
               end
             end

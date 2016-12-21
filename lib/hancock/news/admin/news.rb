@@ -25,7 +25,7 @@ module Hancock::News
             field :categories do
               # searchable :name
             end
-            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_items_with_pages
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_news_with_pages
               field :connected_pages, :hancock_connectable
             end
 
@@ -36,7 +36,7 @@ module Hancock::News
           edit do
             field :enabled, :toggle
             field :name
-            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_items_with_pages
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_news_with_pages
               group :connected_pages do
                 active false
                 field :connected_pages, :hancock_connectable do
@@ -60,11 +60,11 @@ module Hancock::News
             # end
 
             if Hancock::News.config.gallery_support
-              group :image, &Hancock::Gallery::Admin.images_block(:item_images)
+              group :image, &Hancock::Gallery::Admin.images_block(:images)
               # group :image do
               #   active false
               #   field :image, :hancock_image
-              #   field :item_images
+              #   field :images
               # end
             end
 
