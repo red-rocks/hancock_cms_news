@@ -1,110 +1,103 @@
 module Hancock::News
   module Admin
     module News
-      def self.config(fields = {})
+      def self.config(nav_label = nil, fields = {})
+        if nav_label.is_a?(Hash)
+          nav_label, fields = nav_label[:nav_label], nav_label
+        elsif nav_label.is_a?(Array)
+          nav_label, fields = nil, nav_label
+        end
+
         Proc.new {
-          navigation_label I18n.t('hancock.news')
+          navigation_label(!nav_label.blank? ? nav_label : I18n.t("hancock.news"))
+
           list do
             scopes [:by_date, :enabled, nil]
 
             sort_by :publicate_time
 
+            field :enabled, :toggle do
+              searchable false
+            end
+            field :name do
+              searchable true
+            end
+            field :categories do
+              # searchable :name
+            end
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_items_with_pages
+              field :connected_pages, :hancock_connectable
+            end
+
             group :content, &Hancock::Admin.content_block
             group :caching, &Hancock::Cache::Admin.caching_block
           end
 
-          field :enabled, :toggle do
-            searchable false
-          end
-          field :pinned, :toggle do
-            searchable false
-          end
-          field :time do
-            searchable false
-            sort_reverse true
-          end
-          field :publicate_time do
-            searchable false
-            sort_reverse true
-          end
-          field :published, :toggle do
-            searchable false
-          end
-          field :name do
-            searchable true
-          end
-          field :categories do
-            # searchable :name
-          end
-          if Hancock::News.config.pages_support
-            group :connected_pages do
-              active false
-              field :connected_pages, :hancock_connectable
-            end
-          end
-          group :content do
-            active false
-            field :excerpt, :hancock_html do
-              searchable true
-            end
-            # field :excerpt_html, :ck_editor
-            # field :excerpt_clear, :toggle
-          end
-          group :URL do
-            active false
-            field :slugs, :hancock_slugs
-            field :text_slug do
-              searchable true
-            end
-          end
-
           edit do
+            field :enabled, :toggle
+            field :name
+            if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_items_with_pages
+              group :connected_pages do
+                active false
+                field :connected_pages, :hancock_connectable do
+                  read_only do
+                    !bindings[:view].current_user.admin?
+                  end
+                end
+              end
+            end
             group :categories do
               active false
               field :main_category
               field :categories
             end
 
+            group :URL, &Hancock::Admin.url_block
+            # group :URL do
+            #   active false
+            #   field :slugs, :hancock_slugs
+            #   field :text_slug
+            # end
+
             if Hancock::News.config.gallery_support
-              group :image, &Hancock::Gallery::Admin.images_block()
+              group :image, &Hancock::Gallery::Admin.images_block(:item_images)
               # group :image do
               #   active false
               #   field :image, :hancock_image
-              #   field :images
+              #   field :item_images
               # end
             end
+
 
             group :content, &Hancock::Admin.content_block
             # group :content do
             #   active false
+            #   field :excerpt, :hancock_html
             #   field :content, :hancock_html
-            #   # field :content_html, :ck_editor
-            #   # field :content_clear, :toggle
             # end
 
             Hancock::RailsAdminGroupPatch::hancock_cms_group(self, fields)
 
             if Hancock::News.config.seo_support
               group :seo_n_sitemap, &Hancock::Seo::Admin.seo_n_sitemap_block
-              # group :seo do
-              #   active false
-              #   field :seo do
-              #     active true
-              #   end
-              # end
-              # group :sitemap_data do
-              #   active false
-              #   field :sitemap_data do
-              #     active true
-              #   end
-              # end
             end
+            # if Hancock::News.config.seo_support
+            #   group :seo do
+            #     active false
+            #     field :seo
+            #   end
+            #   group :sitemap_data do
+            #     active false
+            #     field :sitemap_data
+            #   end
+            # end
 
-            if Hancock::Pages.config.cache_support
+            if Hancock::News.config.cache_support
               group :caching, &Hancock::Cache::Admin.caching_block
             end
-
           end
+
+          nested_set({max_depth: 1, scopes: []})
 
           sort_embedded(
               {
