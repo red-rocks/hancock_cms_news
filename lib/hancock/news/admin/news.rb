@@ -19,8 +19,17 @@ module Hancock::News
             field :enabled, :toggle do
               searchable false
             end
+            field :published, :toggle do
+              searchable false
+            end
             field :name do
               searchable true
+            end
+            field :publicate_time do
+              searchable false
+            end
+            field :time do
+              searchable false
             end
             field :categories do
               # searchable :name
@@ -35,6 +44,7 @@ module Hancock::News
 
           edit do
             field :enabled, :toggle
+            field :published, :toggle
             field :name
             if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_news_with_pages
               group :connected_pages do
@@ -46,6 +56,8 @@ module Hancock::News
                 end
               end
             end
+            field :publicate_time
+            field :time
             group :categories do
               active false
               field :main_category
