@@ -23,7 +23,7 @@ module Hancock::News
         end
 
         def all_news
-          news_class.any_in(category_ids: self.self_and_descendants.map(&:id))
+          news_class.any_in(category_ids: self.and_descendants.map(&:id))
         end
       end
     end
