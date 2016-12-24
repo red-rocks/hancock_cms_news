@@ -23,9 +23,9 @@ module Hancock::News
             if Hancock::News.config.pages_support and Hancock::News.configuration.can_connect_category_with_pages
               field :connected_pages, :hancock_connectable
             end
-            field :add_item do
+            field :add_news do
               pretty_value do
-                _model = bindings[:object].item_class.rails_admin_model
+                _model = bindings[:object].news_class.rails_admin_model
                 bindings[:view].link_to(
                   'Добавить новость',
                   bindings[:view].new_path(model_name: _model, "#{_model}[category_ids][]": bindings[:object]._id.to_s),

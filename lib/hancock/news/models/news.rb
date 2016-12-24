@@ -38,9 +38,9 @@ module Hancock::News
         before_validation :set_default_main_category
         def set_default_main_category(force = false)
           if force or main_category.blank? or !main_category.enabled and self.respond_to?(:categories)
-            self.main_category = self.categories.enabled.sorted.first
+            self.main_category_id = self.categories.enabled.sorted.pluck(:id).first
           end
-          self.categories << self.main_category if self.main_category
+          self.category_ids << self.main_category_id if self.main_category and !self.category_ids.include?(self.main_category_id)
           self
         end
 

@@ -58,11 +58,8 @@ module Hancock::News
             end
             field :publicate_time
             field :time
-            group :categories do
-              active false
-              field :main_category
-              field :categories
-            end
+            
+            group(:categories, &Hancock::Admin.categories_block)
 
             group :URL, &Hancock::Admin.url_block
             # group :URL do
