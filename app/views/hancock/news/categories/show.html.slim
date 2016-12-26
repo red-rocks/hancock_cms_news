@@ -2,10 +2,11 @@
 /   = render_breadcrumbs :separator => ' / '
   / = render partial: "blocks/breadcrumbs"
   
-/ = render partial: "blocks/seo_block_with_obj", locals: {obj: @news_category}
+- _cache_helper = (Hancock::News.config.cache_support ? :hancock_cache : :cache)
 
-- cache @news_category do
+- send _cache_helper, @news_category do
+  - _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
   .hancock-news-show
     h1.hancock-news-title= @news_category.name
     .hancock-news-category-content
-      = render 'shared/obj', obj: @news_category
+      = render _partial_path, obj: @news_category

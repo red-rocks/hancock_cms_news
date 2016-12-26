@@ -1,3 +1,6 @@
+- _cache_helper = (Hancock::News.config.cache_support ? :hancock_cache : :cache)
+
 - @news_category.each do |news_category|
-  = link_to news_category.name, hancock_news_category_path(news_category), class: "hancock-news-category-title", title: news_category.name
-  .hancock-news-category-excerpt== news_category.excerpt
+  - send _cache_helper, news do
+    = link_to news_category.name, hancock_news_category_path(news_category), class: "hancock-news-category-title", title: news_category.name
+      .hancock-news-category-excerpt== news_category.excerpt

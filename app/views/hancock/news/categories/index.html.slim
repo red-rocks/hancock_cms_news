@@ -1,8 +1,10 @@
 / - if Hancock::News.config.breadcrumbs_on_rails_support
 /   = render_breadcrumbs :separator => ' / '
   / = render partial: "blocks/breadcrumbs"
-  
-= render partial: "blocks/seo_block"
+/ - _cache_helper = (Hancock::News.config.cache_support ? :hancock_cache : :cache)
+
+- _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+= render _partial_path, obj: (@seo_page || @seo_parent_page)
 
 .hancock-news-category-index
   h1= t('hancock.news')
