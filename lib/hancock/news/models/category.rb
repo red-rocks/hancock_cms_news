@@ -49,7 +49,7 @@ module Hancock::News
           ret = [:nested_set]
           # ret += [:multiple_file_upload, :sort_embedded] if Hancock::News.mongoid?
           ret << :model_settings if Hancock::News.config.model_settings_support
-          ret << :model_accesses if Hancock::News.config.user_abilities_support
+          # ret << :model_accesses if Hancock::News.config.user_abilities_support
           ret << :hancock_touch if Hancock::News.config.cache_support
           ret += [:comments, :model_comments] if Hancock::News.config.ra_comments_support
           ret.freeze
