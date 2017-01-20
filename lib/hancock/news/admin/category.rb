@@ -39,7 +39,9 @@ module Hancock::News
             end
 
             group :content, &Hancock::Admin.content_block
-            group :caching, &Hancock::Cache::Admin.caching_block
+            if Hancock::News.config.cache_support
+              group :caching, &Hancock::Cache::Admin.caching_block
+            end
           end
 
           edit do

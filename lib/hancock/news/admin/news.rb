@@ -39,7 +39,9 @@ module Hancock::News
             end
 
             group :content, &Hancock::Admin.content_block
-            group :caching, &Hancock::Cache::Admin.caching_block
+            if Hancock::News.config.cache_support
+              group :caching, &Hancock::Cache::Admin.caching_block
+            end
           end
 
           edit do
@@ -58,7 +60,7 @@ module Hancock::News
             end
             field :publicate_time
             field :time
-            
+
             group(:categories, &Hancock::Admin.categories_block)
 
             group :URL, &Hancock::Admin.url_block
