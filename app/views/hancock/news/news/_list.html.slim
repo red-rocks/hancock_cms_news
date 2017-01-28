@@ -6,4 +6,8 @@
     = link_to news.name, hancock_news_news_path(news), class: "hancock-news-title", title: news.name
     - if Hancock::News.config.gallery_support and news.image?
       .hancock-news-image= image_tag news.image.url(:thumb)
-    .hancock-news-excerpt== news.excerpt
+    .hancock-news-excerpt
+      - if Hancock::News.config.insertions_support
+        == news.page_excerpt
+      - else
+        == news.excerpt

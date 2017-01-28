@@ -17,9 +17,11 @@ module Hancock::News
       if Hancock::News.config.gallery_support
         include Hancock::Gallery::Paperclipable
       end
-
-      if Hancock::Gallery.config.cache_support
+      if Hancock::News.config.cache_support
         include Hancock::Cache::Cacheable
+      end
+      if Hancock::News.config.insertions_support
+        include Hancock::Insertions
       end
 
       include Hancock::News.orm_specific('Category')

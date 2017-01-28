@@ -3,4 +3,8 @@
 - @news_category.each do |news_category|
   - send _cache_helper, news do
     = link_to news_category.name, hancock_news_category_path(news_category), class: "hancock-news-category-title", title: news_category.name
-      .hancock-news-category-excerpt== news_category.excerpt
+      .hancock-news-category-excerpt
+        - if Hancock::News.config.insertions_support
+          == news_category.page_excerpt
+        - else
+          == news_category.excerpt

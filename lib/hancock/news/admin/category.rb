@@ -115,6 +115,10 @@ module Hancock::News
                 end
               end
             end
+
+            if Hancock::News.config.insertions_support
+              group :insertions, &Hancock::Admin.insertions_block
+            end
           end
 
           show do
@@ -138,6 +142,10 @@ module Hancock::News
                   route.link_to(i.name, route.rails_admin.show_path(model_name: model_name, id: i.id), title: i.name)
                 }.join("<br>").html_safe
               end
+            end
+
+            if Hancock::News.config.insertions_support
+              group :insertions, &Hancock::Admin.insertions_block
             end
           end
 
