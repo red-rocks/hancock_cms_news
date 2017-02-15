@@ -7,7 +7,7 @@ module Hancock::News
         include Hancock::News::Controllers::Base
 
         def index
-          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          if Hancock::News.config.breadcrumbs_on_rails_support
             add_breadcrumb(breadcrumbs_categories_title, insert_categories_index_breadcrumbs) if insert_categories_index_breadcrumbs
           end
 
@@ -18,7 +18,7 @@ module Hancock::News
         end
 
         def show
-          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          if Hancock::News.config.breadcrumbs_on_rails_support
             add_breadcrumb(breadcrumbs_categories_title, insert_categories_index_breadcrumbs) if insert_categories_index_breadcrumbs
           end
 
@@ -33,7 +33,7 @@ module Hancock::News
           # @news = @category.news.enabled.publicated_or_pinned.pinned_first.by_publicate_date.all.to_a
           @news = news_index_scope(@category).page(params[:page]).per(news_per_page)
 
-          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          if Hancock::News.config.breadcrumbs_on_rails_support
             # add_breadcrumb @category.name, -> { insert_category_show_breadcrumbs } if insert_category_show_breadcrumbs
             add_breadcrumb(@category.name, insert_category_show_breadcrumbs)# if insert_category_show_breadcrumbs
           end

@@ -34,7 +34,7 @@ module Hancock::News
           end
           @seo_parent_page = find_seo_page(url_for(action: :index))
 
-          if Hancock::Catalog.config.breadcrumbs_on_rails_support
+          if Hancock::News.config.breadcrumbs_on_rails_support
             add_breadcrumb(@news.name, insert_news_show_breadcrumbs) if insert_news_show_breadcrumbs
           end
 
