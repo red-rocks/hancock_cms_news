@@ -21,7 +21,7 @@ module Hancock::News
         include Hancock::Cache::Cacheable
       end
       if Hancock::News.config.insertions_support
-        include Hancock::Insertions
+        include Hancock::InsertionField
       end
 
       include Hancock::News.orm_specific('Category')
