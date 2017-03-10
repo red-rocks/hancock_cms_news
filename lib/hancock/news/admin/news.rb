@@ -28,6 +28,13 @@ module Hancock::News
             field :publicate_time do
               searchable false
             end
+            field :slug do
+              searchable true
+              searchable_columns do
+                [{column: "#{abstract_model.table_name}._slugs", type: :string}]
+              end
+              queryable true
+            end
             field :time do
               searchable false
             end

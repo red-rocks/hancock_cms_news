@@ -37,6 +37,13 @@ module Hancock::News
               end
               formatted_value {}
             end
+            field :slug do
+              searchable true
+              searchable_columns do
+                [{column: "#{abstract_model.table_name}._slugs", type: :string}]
+              end
+              queryable true
+            end
 
             group :content, &Hancock::Admin.content_block
             if Hancock::News.config.cache_support
