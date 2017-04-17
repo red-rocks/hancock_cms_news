@@ -51,7 +51,7 @@ module Hancock::News
           }
 
           if Hancock::News.config.gallery_support
-            embeds_many :images, cascade_callbacks: true, class_name: "Hancock::News::Image"
+            embeds_many :images, cascade_callbacks: true, class_name: "Hancock::News::Image", order: [:order, :asc]
             alias :news_images :images
             accepts_nested_attributes_for :images, allow_destroy: true
           end
