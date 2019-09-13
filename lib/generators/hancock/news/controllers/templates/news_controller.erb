@@ -9,7 +9,11 @@ class <%= camelcased_pluralized_class_name %>Controller < Hancock::News::NewsCon
   end
 
   def per_page
-    Hancock::News.config.news_per_page
+    if Hancock::News.config.model_settings_support
+      Hancock::News::News.settings.per_page(kind: :integer, default: Hancock::News.config.news_per_page)
+    else
+      Hancock::News.config.news_per_page
+    end
   end
   def after_initialize
   end

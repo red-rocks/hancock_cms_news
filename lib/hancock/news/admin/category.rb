@@ -103,7 +103,7 @@ module Hancock::News
               # end
             end
 
-            if Hancock::Pages.config.cache_support
+            if Hancock::News.config.cache_support
               group :caching, &Hancock::Cache::Admin.caching_block
             end
 

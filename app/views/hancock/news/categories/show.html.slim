@@ -4,9 +4,14 @@
   
 - _cache_helper = (Hancock::News.config.cache_support ? :hancock_cache : :cache)
 
-- send _cache_helper, @news_category do
-  - _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
-  .hancock-news-show
-    h1.hancock-news-title= @news_category.name
-    .hancock-news-category-content
-      = render _partial_path, obj: @news_category
+- if @category
+  - send _cache_helper, @category do
+    - _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+    .hancock-news-show
+      / h1.hancock-news-title= @category.name
+      .hancock-news-category-content
+        = render _partial_path, obj: @category
+
+
+- @news.each do |n|
+  p= link_to n.name, hancock_news_news_path(n), class: "hancock-news-catnesegory-title", title: n.name

@@ -15,7 +15,8 @@ module Hancock::News
         include Hancock::Pages::Connectable
       end
       if Hancock::News.config.gallery_support
-        include Hancock::Gallery::Paperclipable
+        # include Hancock::Gallery::Paperclipable
+        include Hancock::Gallery::Uploadable
         # if Hancock::News.config.watermark_support
         #   include Hancock::Gallery::Watermarkable
         # end
@@ -26,6 +27,11 @@ module Hancock::News
       if Hancock::News.config.insertions_support
         include Hancock::InsertionField
       end
+      if Hancock::News.config.model_settings_support
+        include Hancock::Settingable
+      end
+      
+      include Hancock::News::NewsPaging
 
       include SmartExcerpt
 
@@ -53,7 +59,7 @@ module Hancock::News
         end
 
         if Hancock::News.config.gallery_support and Hancock::News.configuration.news_image_styles
-          set_default_auto_crop_params_for(:image)
+          # set_default_auto_crop_params_for(:image)
           hancock_cms_attached_file(:image)
           # if Hancock::News.config.watermark_support
           #   paperclip_with_watermark(:image)

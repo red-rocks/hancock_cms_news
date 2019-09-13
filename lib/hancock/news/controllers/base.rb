@@ -26,7 +26,9 @@ module Hancock::News
           category ? category.news.enabled : news_class.enabled
         end
         def news_index_scope(category = nil)
-          news_scope(category).publicated_or_pinned.pinned_first.by_publicate_date
+          # news_scope(category).publicated_or_pinned.pinned_first.by_publicate_date
+          news_scope(category).publicated_or_pinned.pinned_first.order(news_class.sorting_order)
+          # news_scope(category).publicated_or_pinned.pinned_first.order(news_class.news_sorting_order)
         end
         def news_show_scope(category = nil)
           news_scope(category).publicated_or_pinned

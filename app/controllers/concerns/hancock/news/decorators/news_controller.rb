@@ -3,7 +3,7 @@ module Hancock::News::Decorators
     extend ActiveSupport::Concern
 
     # included do
-    #
+    
     #   def category_class
     #     Hancock::News::Category
     #   end
@@ -17,13 +17,17 @@ module Hancock::News::Decorators
     #       super
     #     end
     #   end
-    #
+    
     #   def per_page
-    #     Hancock::News.config.news_per_page
+    #     if Hancock::News.config.model_settings_support
+    #       Hancock::News::News.settings.per_page(kind: :integer, default: Hancock::News.config.news_per_page)
+    #     else
+    #       Hancock::News.config.news_per_page
+    #     end
     #   end
     #   def after_initialize
     #   end
-    #
+    
     # end
 
   end

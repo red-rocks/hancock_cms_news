@@ -28,6 +28,7 @@ module Hancock::News
     attr_accessor :can_connect_category_with_pages
 
     attr_accessor :localize
+    attr_accessor :model_settings_support
 
     attr_accessor :model_settings_support
     attr_accessor :user_abilities_support
@@ -66,8 +67,8 @@ module Hancock::News
       @can_connect_category_with_pages = true
 
       @localize = Hancock.config.localize
-
-      @model_settings_support = !!defined?(RailsAdminModelSettings)
+      @model_settings_support = Hancock.config.model_settings_support
+      
       @user_abilities_support = !!defined?(RailsAdminUserAbilities)
       @ra_comments_support = !!defined?(RailsAdminComments)
       @watermark_support = !!defined?(PaperclipWatermark)

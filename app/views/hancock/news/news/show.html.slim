@@ -6,12 +6,13 @@
 - _cache_helper = (Hancock::News.config.cache_support ? :hancock_cache : :cache)
 
 
-- send _cache_helper, @news do
-  - _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
-  .hancock-news-show
-    h1.hancock-news-title= @news.name
-    .hancock-news-date= l(@news.time.to_date)
-    - if !Hancock::News.config.news_image_styles.nil? && @news.image?
-      .hancock-news-image= image_tag @news.image.url(:main)
-    .hancock-news-content
-      = render _partial_path, obj: @news
+- if @news
+  - send _cache_helper, @news do
+    - _partial_path = (Hancock::News.config.seo_support ? 'shared/obj_with_seo' : 'shared/obj')
+    .hancock-news-show
+      h1.hancock-news-title= @news.name
+      .hancock-news-date= l(@news.time.to_date)
+      - if !Hancock::News.config.news_image_styles.nil? && @news.image?
+        .hancock-news-image= image_tag @news.image.url(:main)
+      .hancock-news-content
+        = render _partial_path, obj: @news

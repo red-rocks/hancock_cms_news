@@ -52,11 +52,11 @@ module Hancock::News
         end
 
         def per_page
-          Hancock::News.config.categories_per_page
+          category_class.per_page
         end
 
         def news_per_page
-          Hancock::News.config.news_per_page
+          news_class.per_page
         end
 
       end

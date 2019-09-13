@@ -11,7 +11,9 @@ module Hancock::News
             add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
           end
 
-          @news = news_index_scope
+          @category = category_scope.find(params[:category_id]) if params[:category_id].present?
+
+          @news = news_index_scope(@category)
 
           unless per_page.nil?
             @news = @news.page(params[:page]).per(per_page)
@@ -26,7 +28,9 @@ module Hancock::News
             add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
           end
 
-          @news = news_show_scope.find(params[:id])
+          @category = category_scope.find(params[:category_id]) if params[:category_id].present?
+
+          @news = news_show_scope(@category).find(params[:id])
 
           if @news and @news.text_slug != params[:id]
             redirect_to hancock_news_news_path(@news), status_code: 301
@@ -52,7 +56,7 @@ module Hancock::News
         end
 
         def per_page
-          Hancock::News.config.news_per_page
+          news_class.per_page
         end
 
       end
