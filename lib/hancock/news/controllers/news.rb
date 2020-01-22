@@ -7,9 +7,6 @@ module Hancock::News
         include Hancock::News::Controllers::Base
 
         def index
-          if Hancock::News.config.breadcrumbs_on_rails_support
-            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
-          end
 
           @category = category_scope.find(params[:category_id]) if params[:category_id].present?
 
@@ -20,13 +17,13 @@ module Hancock::News
           end
 
           after_initialize
+          if Hancock::News.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
+          end
         end
 
 
         def show
-          if Hancock::News.config.breadcrumbs_on_rails_support
-            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
-          end
 
           @category = category_scope.find(params[:category_id]) if params[:category_id].present?
 
@@ -43,6 +40,9 @@ module Hancock::News
           end
 
           after_initialize
+          if Hancock::News.config.breadcrumbs_on_rails_support
+            add_breadcrumb(breadcrumbs_news_title, insert_news_index_breadcrumbs) if insert_news_index_breadcrumbs
+          end
         end
 
 
